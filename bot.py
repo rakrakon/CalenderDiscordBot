@@ -127,12 +127,13 @@ async def check(ctx):
             for i in range(rowNumber):
                 date = event_df.iloc[i]['date']
                 event = event_df.iloc[i]['event']
-                lessonDay = get_day(date)
-                lessonTime = event_df.iloc[i]['lesson_number']
+                classes = event_df.iloc[i]['classes']
+                eventDay = get_day(date)
+                eventTime = event_df.iloc[i]['lesson_number']
 
-                embed=discord.Embed(type='rich' ,title=f"{action} POG CHAMP WOO POG SKIBIDI BOP BOP BOP BOP YES YES YES", description=f'ביום {lessonDay} {lessonTime} התבטל שיעור {lessonName}  ({teacher}) ', color=0xff0000)
+                embed=discord.Embed(type='rich' ,title=f"{action} POG CHAMP WOO POG SKIBIDI BOP BOP BOP BOP YES YES YES", description=f'ביום {eventDay} משיעור {eventTime} יש {event}', color=0xff0000)
                 embed.set_thumbnail(url='https://media.discordapp.net/attachments/785034172862955530/1088864300313096222/twitch-poggers.png')
-                embed.set_footer(text=f"בתאריך: 1.12.2022 לכיתות ט3-ט4")
+                embed.set_footer(text=f"בתאריך: {date} לכיתות {classes}")
                 await ctx.send(embed=embed)
             df = pd.DataFrame()
             df.to_csv('eventsDiff.csv', index=False)
