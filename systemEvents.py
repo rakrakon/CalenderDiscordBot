@@ -40,7 +40,7 @@ class PricesSpider(scrapy.Spider):
                 
                 try:
                     df_diff = compare_dataframes(df, df2)
-                    df_diff.to_csv('eventsDiff')
+                    df_diff.to_csv('eventsDiff.csv')
                     print(df_diff)
                 except Exception:
                     print(Exception)
