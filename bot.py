@@ -5,6 +5,8 @@ from datetime import datetime
 import calendar
 import random
 
+#TODO: Clock this script and the 2 webscrapers
+
 description = '''An example bot to showcase the discord.ext.commands extension
 module.
 There are a number of utility commands being showcased here.'''
@@ -129,9 +131,9 @@ async def check(ctx):
                 event = event_df.iloc[i]['event']
                 classes = event_df.iloc[i]['classes']
                 eventDay = get_day(date)
-                eventTime = event_df.iloc[i]['lesson_number']
+                eventTime = event_df.iloc[i]['time']
 
-                embed=discord.Embed(type='rich' ,title=f"{action} POG CHAMP WOO POG SKIBIDI BOP BOP BOP BOP YES YES YES", description=f'ביום {eventDay} משיעור {eventTime} יש {event}', color=0xff0000)
+                embed=discord.Embed(type='rich' ,title=f"{event} POG CHAMP WOO POG SKIBIDI BOP BOP BOP BOP YES YES YES", description=f'ביום {eventDay} משיעור {eventTime} יש {event}', color=0x51ff00)
                 embed.set_thumbnail(url='https://media.discordapp.net/attachments/785034172862955530/1088864300313096222/twitch-poggers.png')
                 embed.set_footer(text=f"בתאריך: {date} לכיתות {classes}")
                 await ctx.send(embed=embed)

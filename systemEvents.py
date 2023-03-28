@@ -30,13 +30,13 @@ class PricesSpider(scrapy.Spider):
 
         for i,df in enumerate(dfs):
             if i == 11:
+                #TODO: add if statement in line 37 to check if it is משיעור or just שיעור
                 event_info_df = pd.DataFrame(df[0].values, columns=['event_info'])
-
                 df = pd.concat([df, event_info_df], axis=1)
-                df[['date', 'description']] = df['event_info'].str.split(',', expand=True)
+                df[['date', 'description', 'none']] = df['event_info'].str.split(',', expand=True)
                 df[['event', 'time']] = df['description'].str.split('משיעור', 1, expand=True)
                 df[['time', 'classes']] = df['time'].str.split('לכיתות', 1, expand=True)
-                df.drop(['event_info', 'description', 0], axis=1, inplace=True)
+                df.drop(['event_info', 'description', 'none' ,0], axis=1, inplace=True)
                 
                 try:
                     df_diff = compare_dataframes(df, df2)
