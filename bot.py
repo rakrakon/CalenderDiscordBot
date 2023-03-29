@@ -1,11 +1,12 @@
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 import pandas as pd
 from datetime import datetime
+from scrapy import cmdline
 import calendar
 import random
-
-#TODO: Clock this script and the 2 webscrapers
+import schedule
+import time
 
 description = '''An example bot to showcase the discord.ext.commands extension
 module.
@@ -61,11 +62,17 @@ def get_day(date_str):
 
 @bot.event
 async def on_ready():
+    check.start()
     print(f'Logged in as {bot.user} (ID: {bot.user.id})')
+    print(f'Task Scheduler started')
     print('------')
 
-@bot.command()
-async def check(ctx):
+@tasks.loop(minutes=30)
+async def check():
+    channel = bot.get_channel(1090195068352217090) #! Channel ID
+    
+    cmdline.execute("scrapy runspider systemChanges.py".split()) #? run system changes web scraper
+    cmdline.execute("scrapy runspider systemEvents.py".split()) #? run system events web scraper
     try:
         change_df = pd.read_csv('changesDiff.csv')
         rowNumber = len(change_df.index)
@@ -80,7 +87,7 @@ async def check(ctx):
             embed=discord.Embed(type='rich' ,title=f"{action} POG CHAMP WOO POG SKIBIDI BOP BOP BOP BOP YES YES YES", description=f'ביום {lessonDay} {lessonTime} התבטל שיעור {lessonName}  ({teacher}) ', color=0xff0000)
             embed.set_thumbnail(url='https://media.discordapp.net/attachments/785034172862955530/1088864300313096222/twitch-poggers.png')
             embed.set_footer(text=f"בתאריך: {date}")
-            await ctx.send(embed=embed)
+            await channel.send(embed=embed)
         df = pd.DataFrame()
         df.to_csv('changesDiff.csv', index=False)
     except:
@@ -97,11 +104,11 @@ async def check(ctx):
                 embed=discord.Embed(type='rich' ,title=f"{event} POG CHAMP WOO POG SKIBIDI BOP BOP BOP BOP YES YES YES", description=f'ביום {eventDay} משיעור {eventTime} יש {event}', color=0x51ff00)
                 embed.set_thumbnail(url='https://media.discordapp.net/attachments/785034172862955530/1088864300313096222/twitch-poggers.png')
                 embed.set_footer(text=f"בתאריך: {date} לכיתות {classes}")
-                await ctx.send(embed=embed)
+                await channel.send(embed=embed)
             df = pd.DataFrame()
             df.to_csv('eventsDiff.csv', index=False)
         except:
-            await ctx.send('No changes were made')
+            pass
 
 #! Runs bot
 bot.run(TOKEN)

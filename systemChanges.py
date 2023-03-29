@@ -43,5 +43,5 @@ class PricesSpider(scrapy.Spider):
                     df_diff.to_csv('changesDiff.csv')
                     print(df_diff)
                 except Exception:
-                    print(Exception)
-                df.to_csv('events.csv', index=False) 
+                    print(f'df_diff: {df_diff}')
+                df.to_csv('changes.csv', index=False) 
