@@ -5,9 +5,10 @@ from datetime import datetime
 from scrapy import cmdline
 import calendar
 import random
-import schedule
 import time
 
+
+# TODO: Maybe run the web scraper via os library?
 description = '''An example bot to showcase the discord.ext.commands extension
 module.
 There are a number of utility commands being showcased here.'''
