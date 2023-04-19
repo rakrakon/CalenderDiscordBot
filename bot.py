@@ -4,8 +4,6 @@ import pandas as pd
 from datetime import datetime
 from scrapy import cmdline
 import calendar
-import random
-import time
 
 
 # TODO: Maybe run the web scraper via os library?
