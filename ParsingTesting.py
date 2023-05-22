@@ -9,10 +9,10 @@ def parseSyntaxOne(string):
     #? Split the string by comma
     split_list = string.split(',')
 
-    #! Extracting the values
-    lesson_number = split_list[1].strip() #!Works
-    action = split_list[3].strip() #! Works
-    teacher = split_list[2].strip() #!Works
+    #* Extracting the values
+    lesson_number = split_list[1].strip()
+    action = split_list[3].strip()
+    teacher = split_list[2].strip()
     date = split_list[0].strip()
     #? Return the extracted values as a dictionary
     return {
@@ -32,7 +32,7 @@ for text in df['lesson_info']:
     #TODO: Filter each syntax for the schedule
     if True: #TODO: Make this detect the first syntax: 18.05.2023, שיעור 4, חרצ'נקו ולרי, ביטול שעור
         pass 
-    elif True: #TODO: Make this detect the second syntax(Choose the syntax which is easier to detect the harder to detect syntax place in the else statement)
+    elif True: #TODO: Make this detect the second syntax(Choose the syntax which is easier to detect. The harder to detect syntax place in the else statement)
         pass
     else: #TODO: In here goes the syntax which is harder to detect
         pass
