@@ -9,9 +9,8 @@ import calendar
 # TODO: Maybe change to OS instead of scrapy cmdline?
 # TODO: Maybe run the web scraper via os library?
 
-description = '''An example bot to showcase the discord.ext.commands extension
-module.
-There are a number of utility commands being showcased here.'''
+description = '''A Discord Bot to scrape school schedules form sites
+'''
 
 intents = discord.Intents.default()
 intents.members = True
