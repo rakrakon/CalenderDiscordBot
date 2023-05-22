@@ -4,8 +4,8 @@ from scrapy.utils.response import open_in_browser
 from scrapy import FormRequest
 import pandas as pd
 
-class PricesSpider(scrapy.Spider):
-    name = 'prices'
+class EventsSpider(scrapy.Spider):
+    name = 'events'
     start_urls = ['https://beitbiram.iscool.co.il/default.aspx']
 
 
