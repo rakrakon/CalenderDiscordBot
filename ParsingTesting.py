@@ -3,7 +3,7 @@ import openai
 
 def extract_values_from_text(text):
     # Replace 'YOUR_API_KEY' with your OpenAI API key
-    openai.api_key = ''
+    openai.api_key = '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'
 
     # Define the prompt with instructions
     prompt = """
