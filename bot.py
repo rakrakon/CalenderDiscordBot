@@ -4,7 +4,10 @@ from discord.ext import commands, tasks
 import pandas as pd
 from datetime import datetime
 from scrapy import cmdline
+import calendar
+
 # TODO: Maybe change to OS instead of scrapy cmdline?
+# TODO: Maybe run the web scraper via os library?
 
 description = '''An example bot to showcase the discord.ext.commands extension
 module.
