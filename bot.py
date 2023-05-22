@@ -1,12 +1,10 @@
+import calendar
 import discord
 from discord.ext import commands, tasks
 import pandas as pd
 from datetime import datetime
 from scrapy import cmdline
-import calendar
-import random
-import schedule
-import time
+# TODO: Maybe change to OS instead of scrapy cmdline?
 
 description = '''An example bot to showcase the discord.ext.commands extension
 module.
