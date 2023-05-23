@@ -3,9 +3,7 @@ import discord
 from discord.ext import commands, tasks
 import pandas as pd
 from datetime import datetime
-from scrapy import cmdline
 import os
-import calendar
 
 # TODO: Maybe change to OS instead of scrapy cmdline? (line 74-75)
 
@@ -114,8 +112,8 @@ async def on_ready():
 @tasks.loop(minutes=30)
 async def check():
     channel = bot.get_channel(1090195068352217090) #! Channel ID
-    os.system('cmd /c "scrapy runspider systemChanges.py"')
-    os.system('cmd /c "scrapy runspider systemEvents.py"') 
+    os.system("scrapy runspider systemChanges.py")
+    os.system("scrapy runspider systemEvents.py") 
     try:
         change_df = pd.read_csv('changesDiff.csv')
         rowNumber = len(change_df.index)
