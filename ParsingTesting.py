@@ -1,11 +1,22 @@
 import pandas as pd
+import re
 
-#TODO: Filter each syntax for the schedule in the for loop below
+#TODO: Create parsing function for each syntax
 
 data = pd.read_csv('Test.csv') #!Read the test data
 df = pd.DataFrame(data) #? Make it a pandas DataFrame
+pattern = r"(?:.*-){3}.*"
 
-def parseSyntaxOne(string):
+def parseSyntaxOne(string): #TODO: Make this parse the first syntax
+    pass
+
+def parseSyntaxTwo(string): #TODO: Make this parse the second syntax
+    pass
+
+def detectSyntaxThree(string):
+    pass
+
+def parseSyntaxFour(string):
     #? Split the string by comma
     split_list = string.split(',')
 
@@ -14,6 +25,7 @@ def parseSyntaxOne(string):
     action = split_list[3].strip()
     teacher = split_list[2].strip()
     date = split_list[0].strip()
+
     #? Return the extracted values as a dictionary
     return {
         'Lesson Number': lesson_number,
@@ -22,17 +34,16 @@ def parseSyntaxOne(string):
         'Date': date
     }
 
-def parseSyntaxTwo(string): #! I will do the parsing
-    pass
-
-def parseSyntaxThree(string): #! I will do the parsing
-    pass
-
 for text in df['lesson_info']:
-    #TODO: Filter each syntax for the schedule
-    if True: #TODO: Make this detect the first syntax: 18.05.2023, שיעור 4, חרצ'נקו ולרי, ביטול שעור
-        pass 
-    elif True: #TODO: Make this detect the second syntax(Choose the syntax which is easier to detect. The harder to detect syntax place in the else statement)
+    #!Syntax Filtering
+    match = re.search(pattern, text)
+    
+    if ':' in text:
         pass
-    else: #TODO: In here goes the syntax which is harder to detect
+    elif "..." in text:
         pass
+    elif match:
+         pass
+    else:
+        result = parseSyntaxFour(text)
+        print(result)
