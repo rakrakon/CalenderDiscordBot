@@ -70,8 +70,8 @@ async def on_ready():
 @tasks.loop(minutes=30)
 async def check():
     channel = bot.get_channel(1090195068352217090) #! Channel ID
-    os.system('cmd /c "scrapy runspider systemChanges.py"')
-    os.system('cmd /c "scrapy runspider systemEvents.py"') 
+    os.system("scrapy runspider systemChanges.py")
+    os.system("scrapy runspider systemEvents.py") 
     try:
         change_df = pd.read_csv('changesDiff.csv')
         rowNumber = len(change_df.index)
