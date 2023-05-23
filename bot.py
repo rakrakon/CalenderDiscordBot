@@ -4,10 +4,10 @@ from discord.ext import commands, tasks
 import pandas as pd
 from datetime import datetime
 from scrapy import cmdline
+import os
 import calendar
 
-# TODO: Maybe change to OS instead of scrapy cmdline?
-# TODO: Maybe run the web scraper via os library?
+# TODO: Maybe change to OS instead of scrapy cmdline? (line 74-75)
 
 description = '''A Discord Bot to scrape school schedules form sites
 '''
@@ -70,9 +70,11 @@ async def on_ready():
 @tasks.loop(minutes=30)
 async def check():
     channel = bot.get_channel(1090195068352217090) #! Channel ID
-    
+    #! NOT WORKING
     cmdline.execute("scrapy runspider systemChanges.py".split()) #? run system changes web scraper
     cmdline.execute("scrapy runspider systemEvents.py".split()) #? run system events web scraper
+    # os.system('cmd /k "scrapy runspider systemChanges.py"')
+    # os.system('cmd /k "scrapy runspider systemEvents.py"') 
     try:
         change_df = pd.read_csv('changesDiff.csv')
         rowNumber = len(change_df.index)
