@@ -19,8 +19,11 @@ class EventsSpider(scrapy.Spider):
 
     def parse_table(self, response):
         dfs = pd.read_html(response.text)
-        df2 = pd.read_csv('events.csv')
-        
+        try:
+            df2 = pd.read_csv('events.csv')
+        except Exception:
+            df2 = pd.DataFrame()
+
         def compare_dataframes(df1, df2): #! Function to compare the dataframes one sided
             #% Find rows that are in df1 but not in df2
             df_diff = pd.concat([df1, df2]).drop_duplicates(keep=False)
@@ -33,10 +36,10 @@ class EventsSpider(scrapy.Spider):
                 #TODO: add if statement in line 37 to check if it is משיעור or just שיעור
                 event_info_df = pd.DataFrame(df[0].values, columns=['event_info'])
                 df = pd.concat([df, event_info_df], axis=1)
-                df[['date', 'description', 'none']] = df['event_info'].str.split(',', expand=True)
-                df[['event', 'time']] = df['description'].str.split('משיעור', 1, expand=True)
-                df[['time', 'classes']] = df['time'].str.split('לכיתות', 1, expand=True)
-                df.drop(['event_info', 'description', 'none' ,0], axis=1, inplace=True)
+                df[['date', 'description']] = df['event_info'].str.split(',', expand=True)
+                df[['event', 'time']] = df['description'].str.split('משיעור', expand=True)
+                df[['time', 'classes']] = df['time'].str.split('לכיתות', expand=True)
+                df.drop(['event_info', 'description', 0], axis=1, inplace=True)
                 
                 try:
                     df_diff = compare_dataframes(df, df2)

@@ -19,7 +19,11 @@ class ChangesSpider(scrapy.Spider):
 
     def parse_table(self, response):
         dfs = pd.read_html(response.text)
-        df2 = pd.read_csv('changes.csv')
+        try:
+            df2 = pd.read_csv('events.csv')
+        except Exception:
+            df2 = pd.DataFrame()
+
         outputDF = pd.DataFrame(columns=['Lesson number', 'Action', 'Teacher', 'Date'])
         pattern = r"(?:.*-){3}.*" #* Pattern for the third syntax
 
