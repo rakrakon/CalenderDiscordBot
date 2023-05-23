@@ -1,22 +1,50 @@
 import pandas as pd
 import re
 
-#TODO: Create parsing function for each syntax
+#TODO: Implement this method in the systemChanges.py file
 
 data = pd.read_csv('Test.csv') #!Read the test data
 df = pd.DataFrame(data) #? Make it a pandas DataFrame
-pattern = r"(?:.*-){3}.*"
+outputDF = pd.DataFrame(columns=['Lesson number', 'Action', 'Teacher', 'Date'])
+pattern = r"(?:.*-){3}.*" #* Pattern for the third syntax
 
-def parseSyntaxOne(string): #TODO: Make this parse the first syntax
-    pass
+def parseSyntaxOne(string):
+    #? Split the string by comma
+    split_list = string.split(',')
 
-def parseSyntaxTwo(string): #TODO: Make this parse the second syntax
-    pass
+    #* Extracting the values
+    lesson_number = split_list[1].strip()
+    action = ' '.join(split_list[3].strip().split(' ')[:2])
+    teacher = ' '.join(split_list[3].strip().split(' ')[2:])
+    date = split_list[0].strip()
+    
+    #? Return the extracted values as a dictionary
+    return {
+        'Lesson Number': lesson_number,
+        'Action': action,
+        'Teacher': teacher,
+        'Date': date
+    }
 
-def detectSyntaxThree(string):
-    pass
+def parseSyntaxTwo(string):
+        #? Split the string by comma
+    split_list = string.split(',')
 
-def parseSyntaxFour(string):
+    #* Extracting the values
+    lesson_number = split_list[1].strip()
+    action = ' '.join(split_list[2].strip().split(' ')[:2])
+    teacher = ' '.join(split_list[2].strip().split(' ')[3:])
+    date = split_list[0].strip()
+    
+    #? Return the extracted values as a dictionary
+    return {
+        'Lesson Number': lesson_number,
+        'Action': action,
+        'Teacher': teacher,
+        'Date': date
+    }
+
+def parseSyntaxThree(string):
     #? Split the string by comma
     split_list = string.split(',')
 
@@ -39,11 +67,17 @@ for text in df['lesson_info']:
     match = re.search(pattern, text)
     
     if ':' in text:
-        pass
-    elif "..." in text:
-        pass
-    elif match:
-         pass
+        result = parseSyntaxOne(text)
+        df_dictionary = pd.DataFrame([result])
+        outputDF = pd.concat([outputDF, df_dictionary], ignore_index=True)
+    elif "..." in text or match:
+        result = parseSyntaxTwo(text)
+        df_dictionary = pd.DataFrame([result])
+        outputDF = pd.concat([outputDF, df_dictionary], ignore_index=True)
     else:
-        result = parseSyntaxFour(text)
-        print(result)
+        result = parseSyntaxThree(text)
+        df_dictionary = pd.DataFrame([result])
+        outputDF = pd.concat([outputDF, df_dictionary], ignore_index=True)
+
+outputDF = outputDF.drop('Lesson number', axis=1)
+outputDF.to_csv('Parsed.csv', index=False)
