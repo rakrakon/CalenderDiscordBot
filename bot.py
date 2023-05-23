@@ -93,24 +93,25 @@ async def check():
         df = pd.DataFrame()
         df.to_csv('changesDiff.csv', index=False)
     except:
-        try:
-            event_df = pd.read_csv('eventsDiff.csv')
-            rowNumber = len(event_df.index)
-            for i in range(rowNumber):
-                date = event_df.iloc[i]['date']
-                event = event_df.iloc[i]['event']
-                classes = event_df.iloc[i]['classes']
-                eventDay = get_day(date)
-                eventTime = event_df.iloc[i]['time']
+        pass
+    try:
+        event_df = pd.read_csv('eventsDiff.csv')
+        rowNumber = len(event_df.index)
+        for i in range(rowNumber):
+            date = event_df.iloc[i]['date']
+            event = event_df.iloc[i]['event']
+            classes = event_df.iloc[i]['classes']
+            eventDay = get_day(date)
+            eventTime = event_df.iloc[i]['time']
 
-                embed=discord.Embed(type='rich' ,title=f"{event} POG CHAMP WOO POG SKIBIDI BOP BOP BOP BOP YES YES YES", description=f'ביום {eventDay} משיעור {eventTime} יש {event}', color=0x51ff00)
-                embed.set_thumbnail(url='https://media.discordapp.net/attachments/785034172862955530/1088864300313096222/twitch-poggers.png')
-                embed.set_footer(text=f"בתאריך: {date} לכיתות {classes}")
-                await channel.send(embed=embed)
-            df = pd.DataFrame()
-            df.to_csv('eventsDiff.csv', index=False)
-        except:
-            pass
+            embed=discord.Embed(type='rich' ,title=f"{event} POG CHAMP WOO POG SKIBIDI BOP BOP BOP BOP YES YES YES", description=f'ביום {eventDay} משיעור {eventTime} יש {event}', color=0x51ff00)
+            embed.set_thumbnail(url='https://media.discordapp.net/attachments/785034172862955530/1088864300313096222/twitch-poggers.png')
+            embed.set_footer(text=f"בתאריך: {date} לכיתות {classes}")
+            await channel.send(embed=embed)
+        df = pd.DataFrame()
+        df.to_csv('eventsDiff.csv', index=False)
+    except:
+        pass
 
 #! Runs bot
 bot.run(TOKEN)
