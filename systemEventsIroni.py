@@ -13,16 +13,15 @@ class EventsSpider(scrapy.Spider):
     def parse(self, response):
         data = {
             '__EVENTTARGET' : 'dnn$ctr3413$TimeTableView$btnEvents',
-           'dnn$ctr7126$TimeTableView$ClassesList': '21',
-            'dnn$ctr7126$TimeTableView$ControlId': '2',
+           'dnn$ctr3413$TimeTableView$ClassesList': '21',
+            'dnn$ctr3413$TimeTableView$ControlId': '5',
         }
         yield FormRequest.from_response(response,formdata=data, callback=self.parse_table)
 
     def parse_table(self, response):
-        open_in_browser(response)
         dfs = pd.read_html(response.text)
         try:
-            df2 = pd.read_csv('events.csv')
+            df2 = pd.read_csv('eventsIroni.csv')
         except Exception:
             df2 = pd.DataFrame()
 
@@ -45,8 +44,8 @@ class EventsSpider(scrapy.Spider):
                 
                 try:
                     df_diff = compare_dataframes(df, df2)
-                    df_diff.to_csv('eventsDiff.csv')
+                    df_diff.to_csv('eventsDiffIroni.csv')
                     print(df_diff)
                 except Exception:
                     print(Exception)
-                df.to_csv('events.csv', index=False)
+                df.to_csv('eventsIroni.csv', index=False)

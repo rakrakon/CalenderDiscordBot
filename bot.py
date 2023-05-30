@@ -44,7 +44,7 @@ teacherDictBeitBiram = {
     'גולדשטיין יניטה' : 'היסטוריה'
 }
 
-teacherDictIronih = {
+teacherDictIroni = {
     'בוהדנה שמעון' : 'היסטוריה אזרחית',
     'איינס טל' : 'אנגלית',
     'פריזגר יואל' : 'אנגלית מצטיינים',
@@ -109,13 +109,14 @@ async def on_ready():
     print(f'Task Scheduler started')
     print('------')
 
+#! Reali check function
 @tasks.loop(minutes=30)
-async def check():
+async def checkReali():
     channel = bot.get_channel(1090195068352217090) #! Channel ID
     os.system("scrapy runspider systemChangesReali.py")
     os.system("scrapy runspider systemEventsReali.py") 
     try:
-        change_df = pd.read_csv('changesDiff.csv')
+        change_df = pd.read_csv('changesDiffReali.csv')
         rowNumber = len(change_df.index)
         for i in range(rowNumber):
             date = change_df.iloc[i]['date']
@@ -134,7 +135,7 @@ async def check():
     except:
         pass
     try:
-        event_df = pd.read_csv('eventsDiff.csv')
+        event_df = pd.read_csv('eventsDiffReali.csv')
         rowNumber = len(event_df.index)
         for i in range(rowNumber):
             date = event_df.iloc[i]['date']
@@ -149,6 +150,50 @@ async def check():
             await channel.send(embed=embed)
         df = pd.DataFrame()
         df.to_csv('eventsDiff.csv', index=False)
+    except:
+        pass
+
+
+@tasks.loop(minutes=30)
+async def checkIroni():
+    channel = bot.get_channel(1090195068352217090) #TODO: set Channel ID
+    os.system("scrapy runspider systemChangesIroni.py")
+    os.system("scrapy runspider systemEventsIroni.py")
+    try:
+        change_df = pd.read_csv('changesDiffIroni.csv')
+        rowNumber = len(change_df.index)
+        for i in range(rowNumber):
+            date = change_df.iloc[i]['date']
+            action = change_df.iloc[i]['cancellation']
+            teacher = change_df.iloc[i]['instructor'].strip()
+            lessonName = teacherDictIroni[teacher]
+            lessonDay = get_day(date)
+            lessonTime = change_df.iloc[i]['lesson_number']
+
+            embed=discord.Embed(type='rich' ,title=f"{action} POG CHAMP WOO POG SKIBIDI BOP BOP BOP BOP YES YES YES", description=f'ביום {lessonDay} {lessonTime} התבטל שיעור {lessonName}  ({teacher}) ', color=0xff0000)
+            embed.set_thumbnail(url='https://media.discordapp.net/attachments/785034172862955530/1088864300313096222/twitch-poggers.png')
+            embed.set_footer(text=f"בתאריך: {date}")
+            await channel.send(embed=embed)
+        df = pd.DataFrame()
+        df.to_csv('changesDiffIroni.csv', index=False)
+    except:
+        pass
+    try:
+        event_df = pd.read_csv('eventsDiffIroni.csv')
+        rowNumber = len(event_df.index)
+        for i in range(rowNumber):
+            date = event_df.iloc[i]['date']
+            event = event_df.iloc[i]['event']
+            classes = event_df.iloc[i]['classes']
+            eventDay = get_day(date)
+            eventTime = event_df.iloc[i]['time']
+
+            embed=discord.Embed(type='rich' ,title=f"{event} POG CHAMP WOO POG SKIBIDI BOP BOP BOP BOP YES YES YES", description=f'ביום {eventDay} משיעור {eventTime} יש {event}', color=0x51ff00)
+            embed.set_thumbnail(url='https://media.discordapp.net/attachments/785034172862955530/1088864300313096222/twitch-poggers.png')
+            embed.set_footer(text=f"בתאריך: {date} לכיתות {classes}")
+            await channel.send(embed=embed)
+        df = pd.DataFrame()
+        df.to_csv('eventsDiffIroni.csv', index=False)
     except:
         pass
 

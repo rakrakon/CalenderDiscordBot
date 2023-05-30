@@ -20,7 +20,7 @@ class EventsSpider(scrapy.Spider):
     def parse_table(self, response):
         dfs = pd.read_html(response.text)
         try:
-            df2 = pd.read_csv('events.csv')
+            df2 = pd.read_csv('eventsReali.csv')
         except Exception:
             df2 = pd.DataFrame()
 
@@ -43,8 +43,8 @@ class EventsSpider(scrapy.Spider):
                 
                 try:
                     df_diff = compare_dataframes(df, df2)
-                    df_diff.to_csv('eventsDiff.csv')
+                    df_diff.to_csv('eventsDiffReali.csv')
                     print(df_diff)
                 except Exception:
                     print(Exception)
-                df.to_csv('events.csv', index=False)
+                df.to_csv('eventsReali.csv', index=False)
