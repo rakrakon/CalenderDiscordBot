@@ -104,7 +104,6 @@ def get_day(date_str):
 
 @bot.event
 async def on_ready():
-    check.start()
     print(f'Logged in as {bot.user} (ID: {bot.user.id})')
     print(f'Task Scheduler started')
     print('------')
