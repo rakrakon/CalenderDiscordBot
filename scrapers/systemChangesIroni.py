@@ -20,7 +20,7 @@ class ChangesSpider(scrapy.Spider):
     def parse_table(self, response):
         dfs = pd.read_html(response.text)
         try:
-            df2 = pd.read_csv('changesIroni.csv')
+            df2 = pd.read_csv('data\changesIroni.csv')
         except Exception:
             df2 = pd.DataFrame()
 
@@ -133,8 +133,8 @@ class ChangesSpider(scrapy.Spider):
                 #! Check for differances with the exsisting one
                 try:
                     df_diff = compare_dataframes(outputDF, df2)
-                    df_diff.to_csv('changesDiffIroni.csv', index=False)
+                    df_diff.to_csv('data\changesDiffIroni.csv', index=False)
                     print(df_diff)
                 except Exception:
                     print(f'df_diff: {df_diff}')
-                outputDF.to_csv('changesIroni.csv', index=False) 
+                outputDF.to_csv('data\changesIroni.csv', index=False) 

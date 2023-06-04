@@ -107,15 +107,16 @@ async def on_ready():
     print(f'Logged in as {bot.user} (ID: {bot.user.id})')
     print(f'Task Scheduler started')
     print('------')
+    checkReali.start()
 
 #! Reali check function
 @tasks.loop(minutes=30)
 async def checkReali():
     channel = bot.get_channel(1090195068352217090) #! Channel ID
-    os.system("scrapy runspider systemChangesReali.py")
-    os.system("scrapy runspider systemEventsReali.py") 
+    os.system("scrapy runspider scrapers\systemChangesReali.py")
+    os.system("scrapy runspider scrapers\systemEventsReali.py")
     try:
-        change_df = pd.read_csv('changesDiffReali.csv')
+        change_df = pd.read_csv('data\changesDiffReali.csv')
         rowNumber = len(change_df.index)
         for i in range(rowNumber):
             date = change_df.iloc[i]['date']
@@ -130,11 +131,11 @@ async def checkReali():
             embed.set_footer(text=f"בתאריך: {date}")
             await channel.send(embed=embed)
         df = pd.DataFrame()
-        df.to_csv('changesDiff.csv', index=False)
+        df.to_csv('data\changesDiffReali.csv', index=False)
     except:
         pass
     try:
-        event_df = pd.read_csv('eventsDiffReali.csv')
+        event_df = pd.read_csv('data\eventsDiffReali.csv')
         rowNumber = len(event_df.index)
         for i in range(rowNumber):
             date = event_df.iloc[i]['date']
@@ -148,53 +149,53 @@ async def checkReali():
             embed.set_footer(text=f"בתאריך: {date} לכיתות {classes}")
             await channel.send(embed=embed)
         df = pd.DataFrame()
-        df.to_csv('eventsDiff.csv', index=False)
+        df.to_csv('data\eventsDiffReali.csv', index=False)
     except:
         pass
 
 
-@tasks.loop(minutes=30)
-async def checkIroni():
-    channel = bot.get_channel(1090195068352217090) #TODO: set Channel ID
-    os.system("scrapy runspider systemChangesIroni.py")
-    os.system("scrapy runspider systemEventsIroni.py")
-    try:
-        change_df = pd.read_csv('changesDiffIroni.csv')
-        rowNumber = len(change_df.index)
-        for i in range(rowNumber):
-            date = change_df.iloc[i]['date']
-            action = change_df.iloc[i]['cancellation']
-            teacher = change_df.iloc[i]['instructor'].strip()
-            lessonName = teacherDictIroni[teacher]
-            lessonDay = get_day(date)
-            lessonTime = change_df.iloc[i]['lesson_number']
+# @tasks.loop(minutes=30)
+# async def checkIroni():
+#     channel = bot.get_channel(1090195068352217090) #TODO: set Channel ID
+#     os.system("scrapy runspider systemChangesIroni.py")
+#     os.system("scrapy runspider systemEventsIroni.py")
+#     try:
+#         change_df = pd.read_csv('data/changesDiffIroni.csv')
+#         rowNumber = len(change_df.index)
+#         for i in range(rowNumber):
+#             date = change_df.iloc[i]['date']
+#             action = change_df.iloc[i]['cancellation']
+#             teacher = change_df.iloc[i]['instructor'].strip()
+#             lessonName = teacherDictIroni[teacher]
+#             lessonDay = get_day(date)
+#             lessonTime = change_df.iloc[i]['lesson_number']
 
-            embed=discord.Embed(type='rich' ,title=f"{action} POG CHAMP WOO POG SKIBIDI BOP BOP BOP BOP YES YES YES", description=f'ביום {lessonDay} {lessonTime} התבטל שיעור {lessonName}  ({teacher}) ', color=0xff0000)
-            embed.set_thumbnail(url='https://media.discordapp.net/attachments/785034172862955530/1088864300313096222/twitch-poggers.png')
-            embed.set_footer(text=f"בתאריך: {date}")
-            await channel.send(embed=embed)
-        df = pd.DataFrame()
-        df.to_csv('changesDiffIroni.csv', index=False)
-    except:
-        pass
-    try:
-        event_df = pd.read_csv('eventsDiffIroni.csv')
-        rowNumber = len(event_df.index)
-        for i in range(rowNumber):
-            date = event_df.iloc[i]['date']
-            event = event_df.iloc[i]['event']
-            classes = event_df.iloc[i]['classes']
-            eventDay = get_day(date)
-            eventTime = event_df.iloc[i]['time']
+#             embed=discord.Embed(type='rich' ,title=f"{action} POG CHAMP WOO POG SKIBIDI BOP BOP BOP BOP YES YES YES", description=f'ביום {lessonDay} {lessonTime} התבטל שיעור {lessonName}  ({teacher}) ', color=0xff0000)
+#             embed.set_thumbnail(url='https://media.discordapp.net/attachments/785034172862955530/1088864300313096222/twitch-poggers.png')
+#             embed.set_footer(text=f"בתאריך: {date}")
+#             await channel.send(embed=embed)
+#         df = pd.DataFrame()
+#         df.to_csv('data/changesDiffIroni.csv', index=False)
+#     except:
+#         pass
+#     try:
+#         event_df = pd.read_csv('data/eventsDiffIroni.csv')
+#         rowNumber = len(event_df.index)
+#         for i in range(rowNumber):
+#             date = event_df.iloc[i]['date']
+#             event = event_df.iloc[i]['event']
+#             classes = event_df.iloc[i]['classes']
+#             eventDay = get_day(date)
+#             eventTime = event_df.iloc[i]['time']
 
-            embed=discord.Embed(type='rich' ,title=f"{event} POG CHAMP WOO POG SKIBIDI BOP BOP BOP BOP YES YES YES", description=f'ביום {eventDay} משיעור {eventTime} יש {event}', color=0x51ff00)
-            embed.set_thumbnail(url='https://media.discordapp.net/attachments/785034172862955530/1088864300313096222/twitch-poggers.png')
-            embed.set_footer(text=f"בתאריך: {date} לכיתות {classes}")
-            await channel.send(embed=embed)
-        df = pd.DataFrame()
-        df.to_csv('eventsDiffIroni.csv', index=False)
-    except:
-        pass
+#             embed=discord.Embed(type='rich' ,title=f"{event} POG CHAMP WOO POG SKIBIDI BOP BOP BOP BOP YES YES YES", description=f'ביום {eventDay} משיעור {eventTime} יש {event}', color=0x51ff00)
+#             embed.set_thumbnail(url='https://media.discordapp.net/attachments/785034172862955530/1088864300313096222/twitch-poggers.png')
+#             embed.set_footer(text=f"בתאריך: {date} לכיתות {classes}")
+#             await channel.send(embed=embed)
+#         df = pd.DataFrame()
+#         df.to_csv('data/eventsDiffIroni.csv', index=False)
+#     except:
+#         pass
 
 #! Runs bot
 bot.run(TOKEN)
